@@ -1,15 +1,17 @@
-# Semaphore CI/CD demo for Kubernetes
+# Semaphore CI/CD demo for Google Cloud Run
 
 This is an example application and CI/CD pipeline showing how to build, test and
-deploy a microservice to Kubernetes using Semaphore 2.0.
+deploy a serverless microservice to Google Cloud Run using Semaphore 2.0.
 
 Ingredients:
 
 - Ruby Sinatra as web framework
 - RSpec for tests
 - Packaged in a Docker container
-- Container pushed to Docker Hub registry
-- Deployed to Kubernetes
+- Container pushed to Google Container Registry
+- Deployed to Google Cloud Run:
+    - One-click deployment to staging
+    - Continuous deployment to master on green builds on master branch
 
 ## CI/CD on Semaphore
 
