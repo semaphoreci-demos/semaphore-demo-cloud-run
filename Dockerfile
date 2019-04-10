@@ -11,6 +11,6 @@ RUN bundle install --without development test
 
 ADD . $APP_HOME
 
-EXPOSE 4567
+EXPOSE 8080
 
-CMD ["bundle", "exec", "rackup", "--host", "0.0.0.0", "-p", "4567"]
+CMD ["bundle", "exec", "rackup", "--host", "0.0.0.0", "-p", "8080"]
