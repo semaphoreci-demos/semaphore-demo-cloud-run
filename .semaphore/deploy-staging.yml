@@ -1,0 +1,19 @@
+# This pipeline runs after docker-build.yml
+version: v1.0
+name: Deploy to staging
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Deploy to staging
+    task:
+      secrets:
+        - name: google-cloud-stg
+      jobs:
+      - name: run deploy
+        commands:
+          - gcloud auth activate-service-account --key-file=.secrets.gcp.json
+          - gcloud auth configure-docker -q
+          # Deploy to Cloud Run, using flags to avoid interactive prompt:
+          - gcloud beta run deploy semaphore-demo-cloud-run-stg --project semaphore2-stg --image gcr.io/semaphore2-stg/semaphore-demo-cloud-run:${SEMAPHORE_GIT_SHA:0:7} --region us-central1

@@ -5,7 +5,7 @@ version: v1.0
 
 # Name of your pipeline. In this example we connect multiple pipelines with
 # promotions, so it helps to differentiate what's the job of each.
-name: CI
+name: Run tests
 
 # An agent defines the environment in which your code runs.
 # It is a combination of one of available machine types and operating
@@ -60,9 +60,6 @@ blocks:
 
 # If all tests pass, we move on to build a Docker image.
 # This is a job for a separate pipeline which we link with a promotion.
-#
-# What happens outside semaphore.yml will not appear in GitHub pull
-# request status report.
 #
 # In this example we run docker build automatically on every branch.
 # You may want to limit it by branch name, or trigger it manually.

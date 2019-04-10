@@ -10,44 +10,34 @@ agent:
 blocks:
   - name: Build
     task:
-      # Mount a secret which defines DOCKER_USERNAME and DOCKER_PASSWORD
-      # environment variables.
+      # Mount a secret which defines an authentication key file.
       # For info on creating secrets, see:
-      # https://docs.semaphoreci.com/article/66-environment-variables-and-secrets
+      # - https://docs.semaphoreci.com/article/66-environment-variables-and-secrets
+      # - https://docs.semaphoreci.com/article/72-google-container-registry-gcr
       secrets:
-        - name: markoa-dockerhub
+        - name: google-cloud-stg
       jobs:
       - name: Docker build
         commands:
-          # Authenticate with Docker Hub
-          # using environment variables in markoa-dockerhub secret:
-          - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+          # Authenticate using the file injected from the secret
+          - gcloud auth activate-service-account --key-file=.secrets.gcp.json
+          # Configure access to container registry, silence confirmation prompts with -q
+          - gcloud auth configure-docker -q
+
           - checkout
 
-          # Use docker layer caching and reuse unchanged layers to build a new
-          # container image faster.
-          # To do that, we first need to pull a previous version of container:
-          - docker pull semaphoredemos/semaphore-demo-ruby-kubernetes:latest || true
+          - docker build -t "gcr.io/semaphore2-stg/semaphore-demo-cloud-run:${SEMAPHORE_GIT_SHA:0:7}" .
+          - docker push "gcr.io/semaphore2-stg/semaphore-demo-cloud-run:${SEMAPHORE_GIT_SHA:0:7}"
 
-          # Build a new image based on pulled image, if present.
-          # Use $SEMAPHORE_WORKFLOW_ID environment variable to produce a
-          # unique image tag.
-          # For a list of available environment variables on Semaphore, see:
-          # https://docs.semaphoreci.com/article/12-environment-variables
-          - docker build --cache-from semaphoredemos/semaphore-demo-ruby-kubernetes:latest -t semaphoredemos/semaphore-demo-ruby-kubernetes:$SEMAPHORE_WORKFLOW_ID .
-          - docker images
-
-          # Push a new image to Docker Hub container registry:
-          - docker push semaphoredemos/semaphore-demo-ruby-kubernetes:$SEMAPHORE_WORKFLOW_ID
-
-# The deployment pipeline is defined to run on manual approval from the UI.
-# Semaphore will the time and the name of the person who promotes each
-# deployment.
-#
-# You could, for example, add another promotion to a pipeline that
-# automatically deploys to a staging environment from branches named
-# after a certain pattern.
-# https://docs.semaphoreci.com/article/50-pipeline-yaml#promotions
 promotions:
-  - name: Deploy to Kubernetes
-    pipeline_file: deploy-k8s.yml
+  # Deployment to staging can be trigger manually:
+  - name: Deploy to staging
+    pipeline_file: deploy-staging.yml
+
+  # Automatically deploy to production on successful builds on master branch:
+  - name: Deploy to production
+    pipeline_file: deploy-production.yml
+    auto_promote_on:
+      - result: passed
+        branch:
+          - master
