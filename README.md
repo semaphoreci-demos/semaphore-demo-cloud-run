@@ -22,6 +22,8 @@ The CI/CD pipeline is defined in `.semaphore` directory and looks like this:
 
 ![CI/CD pipeline on Semaphore](pipeline.png)
 
+You can [follow through the documentation][docs] for a complete walkthrough.
+
 ## Local application setup
 
 To run the microservice:
@@ -51,3 +53,5 @@ curl localhost
 Copyright (c) 2019 Rendered Text
 
 Distributed under the MIT License. See the file LICENSE.
+
+[docs]: https://docs.semaphoreci.com/article/128-google-cloud-run-cicd
