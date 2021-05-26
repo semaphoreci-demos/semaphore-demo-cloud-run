@@ -29,4 +29,4 @@ promotions:
   - name: Dockerize (Gcloud)
     pipeline_file: docker-build.yml
   - name: Deploy to AWS
-    pipeline_file: pipeline_5.yml
+    pipeline_file: deploy-aws-apprun.yml
