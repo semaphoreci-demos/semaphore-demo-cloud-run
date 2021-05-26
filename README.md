@@ -1,7 +1,9 @@
 # Semaphore CI/CD demo for Google Cloud Run
 
+[![Build Status](https://semaphore-demos.semaphoreci.com/badges/semaphore-demo-cloud-run/branches/master.svg)](https://semaphore-demos.semaphoreci.com/projects/semaphore-demo-cloud-run)
+
 This is an example application and CI/CD pipeline showing how to build, test and
-deploy a serverless microservice to Google Cloud Run using Semaphore 2.0.
+deploy a serverless microservice to Google Cloud Run using Semaphore.
 
 Ingredients:
 
@@ -28,29 +30,29 @@ You can [follow through the documentation][docs] for a complete walkthrough.
 
 To run the microservice:
 
-```
-bundle install --path .bundle
+```bash
+bundle install
 bundle exec rackup
 ```
 
 To run tests:
 
-```
+```bash
 bundle exec rspec
 ```
 
 To build and run Docker container:
 
-```
-docker build -t semaphore-demo-ruby-kubernetes .
-docker run -p 80:4567 semaphore-demo-ruby-kubernetes
-curl localhost
+```bash
+docker build -t semaphore-demo-ruby-app .
+docker run -itd -p 8080:8080 semaphore-demo-ruby-app
+curl localhost:8080
 > hello world :))
 ```
 
 ## License
 
-Copyright (c) 2019 Rendered Text
+Copyright (c) 2021 Rendered Text
 
 Distributed under the MIT License. See the file LICENSE.
 
