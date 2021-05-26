@@ -1,0 +1,24 @@
+version: v1.0
+name: Deploy AWS App Run
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Deploy
+    task:
+      jobs:
+        - name: Build and push
+          commands:
+            - checkout
+            - aws ecr get-login --no-include-email | bash
+            - 'docker pull "$ECR_IMAGE":latest || true'
+            - 'docker build -t "$ECR_IMAGE":$SEMAPHORE_WORKFLOW_ID --cache-from "$ECR_IMAGE":latest .'
+            - 'docker tag "$ECR_IMAGE":$SEMAPHORE_WORKFLOW_ID "$ECR_IMAGE":latest'
+            - 'docker push "$ECR_IMAGE":$SEMAPHORE_WORKFLOW_ID'
+            - 'docker push "$ECR_IMAGE":latest'
+      secrets:
+        - name: AWS
+      env_vars:
+        - name: ECR_IMAGE
+          value: AWS_ACCOUNT_ID.dkr.ecr.AWS_REGION.amazonaws.com/APP_NAME/SERVICE_NAME
