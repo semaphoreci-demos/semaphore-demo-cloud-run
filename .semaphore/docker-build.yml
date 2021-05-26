@@ -1,6 +1,6 @@
 # This pipeline runs after semaphore.yml
 version: v1.0
-name: Docker build
+name: Docker build (Google Cloud)
 agent:
   machine:
     # Use a machine type with more RAM and CPU power for faster container
