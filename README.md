@@ -24,6 +24,10 @@ The CI/CD pipeline is defined in `.semaphore` directory and looks like this:
 
 ![CI/CD pipeline on Semaphore](pipeline.png)
 
+The repository includes a second deployment pipeline for [AWS App Runner](https://aws.amazon.com/apprunner/).
+
+![CI/CD pipeline for App Runner](pipeline-apprun.png)
+
 You can [follow through the documentation][docs] for a complete walkthrough.
 
 ## Local application setup
