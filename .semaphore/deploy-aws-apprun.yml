@@ -21,4 +21,4 @@ blocks:
         - name: AWS
       env_vars:
         - name: ECR_IMAGE
-          value: BAR_1
+          value: AWS_ACCOUNT_ID.dkr.ecr.AWS_REGION.amazonaws.com/APP_NAME/SERVICE_NAME
