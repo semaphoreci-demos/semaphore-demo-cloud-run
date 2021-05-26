@@ -1,6 +1,6 @@
 # This pipeline runs after docker-build.yml
 version: v1.0
-name: Deploy to staging
+name: Deploy to staging (Google Cloud)
 agent:
   machine:
     type: e1-standard-2
